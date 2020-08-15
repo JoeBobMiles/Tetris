@@ -9,12 +9,16 @@ function Grid:new()
     setmetatable(grid, self)
     self.__index = self
 
+    local cellDimension = 50
+
     self.cells = {}
     for x = 1, 10, 1 do
         self.cells[x] = {}
 
         for y = 1, 10, 1 do
-            self.cells[x][y] = Cell:new(x * 10,y * 10)
+            self.cells[x][y] = Cell:new(
+                x * cellDimension,y * cellDimension,
+                cellDimension)
         end
     end
 

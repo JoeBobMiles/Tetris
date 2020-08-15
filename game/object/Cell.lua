@@ -5,7 +5,7 @@ local Cell = GameObject:new{
     y = 0,
 }
 
-function Cell:new(x, y)
+function Cell:new(x, y, dimension)
     local cell = {}
 
     setmetatable(cell, self)
@@ -13,12 +13,16 @@ function Cell:new(x, y)
 
     cell.x = x or 0
     cell.y = y or 0
+    cell.dimension = dimension or 10
 
     return cell
 end
 
 function Cell:draw(game)
-    love.graphics.rectangle("line", self.x, self.y, 10, 10)
+    love.graphics.rectangle(
+        "line",
+        self.x, self.y,
+        self.dimension, self.dimension)
 end
 
 return Cell
