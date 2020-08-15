@@ -3,13 +3,13 @@ local Cell = require("game.object.Cell")
 
 local Grid = GameObject:new()
 
-function Grid:new(columns, rows)
+function Grid:new(columns, rows, cellDimension)
     local grid = {}
 
     setmetatable(grid, self)
     self.__index = self
 
-    local cellDimension = 50
+    cellDimension = cellDimension or 10
 
     self.cells = {}
     for x = 1, (columns or 1), 1 do
