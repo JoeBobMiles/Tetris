@@ -1,16 +1,25 @@
+local Grid = require("game.object.Grid")
+
 local Game = {}
 
 function Game:new()
-    local game = {}
+    local game = {
+        objects = {}
+    }
 
     setmetatable(game, self)
     self.__index = self
+
+    game.objects.grid = Grid:new()
 
     return game
 end
 
 function Game:draw()
-    love.graphics.print("Hello World", 400, 300)
+    for name, object in pairs(self.objects)
+    do
+        object:draw(self)
+    end
 end
 
 return Game
