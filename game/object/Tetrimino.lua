@@ -44,11 +44,17 @@ function Tetromino:draw(game)
         end,
         ["J"] =
         function (column, row)
-            return
+            fillCell(column-1, row)
+            fillCell(column, row)
+            fillCell(column, row-1)
+            fillCell(column, row-2)
         end,
         ["L"] =
         function (column, row)
-            return
+            fillCell(column+1, row)
+            fillCell(column, row)
+            fillCell(column, row-1)
+            fillCell(column, row-2)
         end,
         ["O"] =
         function (column, row)
