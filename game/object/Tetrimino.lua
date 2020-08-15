@@ -14,4 +14,15 @@ function Tetrimino:new(column, row)
     return tetrimino
 end
 
+function Tetrimino:draw(game)
+    local grid = game.objects.grid
+
+    love.graphics.rectangle(
+        "fill",
+        grid.x + (grid.cellDimension * self.column),
+        grid.y + (grid.cellDimension * self.row),
+        grid.cellDimension,
+        grid.cellDimension)
+end
+
 return Tetrimino
