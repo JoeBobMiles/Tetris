@@ -79,7 +79,10 @@ function Tetromino:draw(game)
         end,
         ["T"] =
         function (column, row)
-            return
+            fillCell(column, row)
+            fillCell(column-1, row-1)
+            fillCell(column, row-1)
+            fillCell(column+1, row-1)
         end,
     }
 
