@@ -1,0 +1,159 @@
+# This is my Itch.IO release workflow
+name: release
+
+# Run when a version tag (i.e. v0, v1, etc...) is pushed to master.
+on:
+  push:
+    tags:
+    - v*
+
+env:
+  GAME_NAME: pong
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      LOVE_VERSION: 11.3
+
+    steps:
+    - name: Checkout most recent version.
+      uses: actions/checkout@v2
+    
+    - name: Build game.
+      uses: nhartland/love-build@v1-beta2
+      id: love_build
+      with:
+        app_name: ${{ env.GAME_NAME }}
+        love_version: ${{ env.LOVE_VERSION }}
+
+    - name: Upload .love bundle.
+      uses: actions/upload-artifact@v2
+      with:
+        name: love_build
+        path: ${{ steps.love_build.outputs.love-filename }}
+
+    - name: Upload Win32 binary.
+      uses: actions/upload-artifact@v2
+      with:
+        name: win32_build
+        path: ${{ steps.love_build.outputs.win32-filename }}
+
+    - name: Upload Win64 binary.
+      uses: actions/upload-artifact@v2
+      with:
+        name: win64_build
+        path: ${{ steps.love_build.outputs.win64-filename }}
+
+    - name: Upload MacOS binary.
+      uses: actions/upload-artifact@v2
+      with:
+        name: macos_build
+        path: ${{ steps.love_build.outputs.macos-filename }}
+
+  github:
+    runs-on: ubuntu-latest
+    needs: build
+
+    env:
+      DRAFT: true
+      PRERELEASE: ${{ contains(github.ref,'beta') || contains(github.ref,'alpha') }}
+
+    steps:
+    - name: Create a new release.
+      uses: actions/create-release@v1
+      id: create_release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: ${{ env.DRAFT }}
+        prerelease: ${{ env.PRERELEASE }}
+
+    - name: Download build files.
+      uses: actions/download-artifact@v2
+
+    - name: Upload .love bundle to release.
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: love_build/${{ env.GAME_NAME }}.love
+        asset_name: ${{ env.GAME_NAME }}.love
+        asset_content_type: application/zip
+
+    - name: Upload Win32 binary to release.
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: win32_build/${{ env.GAME_NAME }}_win32.zip
+        asset_name: ${{ env.GAME_NAME }}_win32.zip
+        asset_content_type: application/zip
+
+    - name: Upload Win64 binary to release.
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: win64_build/${{ env.GAME_NAME }}_win64.zip
+        asset_name: ${{ env.GAME_NAME }}_win64.zip
+        asset_content_type: application/zip
+
+    - name: Upload MacOS binary to release.
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: macos_build/${{ env.GAME_NAME }}_macos.zip
+        asset_name: ${{ env.GAME_NAME }}_macos.zip
+        asset_content_type: application/zip
+
+  itchio:
+    runs-on: ubuntu-latest
+    needs: build
+
+    env:
+      BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+      ITCH_USER: joebobmiles
+
+    steps:
+    - name: Download build files.
+      uses: actions/download-artifact@v2
+
+    - name: Extract version number from GitHub ref
+      run: echo "::set-env name=VERSION::${GITHUB_REF##*/v}"
+
+    - name: Upload .love bundle.
+      uses: josephbmanley/butler-publish-itchio-action@master
+      env:
+        ITCH_GAME: ${{ env.GAME_NAME }}
+        CHANNEL: win-macos-linux
+        PACKAGE: love_build
+
+    - name: Upload Win32 binary.
+      uses: josephbmanley/butler-publish-itchio-action@master
+      env:
+        ITCH_GAME: ${{ env.GAME_NAME }}
+        CHANNEL: win32
+        PACKAGE: win32_build
+
+    - name: Upload Win64 binary.
+      uses: josephbmanley/butler-publish-itchio-action@master
+      env:
+        ITCH_GAME: ${{ env.GAME_NAME }}
+        CHANNEL: win64
+        PACKAGE: win64_build
+
+    - name: Upload MacOS binary.
+      uses: josephbmanley/butler-publish-itchio-action@master
+      env:
+        ITCH_GAME: ${{ env.GAME_NAME }}
+        CHANNEL: macos
+        PACKAGE: macos_build
