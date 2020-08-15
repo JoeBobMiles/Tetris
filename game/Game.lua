@@ -42,7 +42,7 @@ end
 function Game:keyreleased(key, scancode)
     if key == "r"
     then
-       game.objects.tetromino.angle = game.objects.tetromino.angle + 90 
+       game.objects.tetromino.angle = game.objects.tetromino.angle + 90
     end
 end
 
