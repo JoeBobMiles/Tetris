@@ -77,18 +77,42 @@ function Tetromino:shape()
     }
 
     local shape = shapes[self.type]
-    local angleRadians = self.angle * (math.pi / 180)
 
+    local angleRadians = self.angle * (math.pi / 180)
     local sine = math.sin(angleRadians)
     local cosine = math.cos(angleRadians)
+
+    local minX = 0
+    local maxX = 0
+    local minY = 0
+    local maxY = 0
 
     -- Hard-coded Euclidean rotation of tetromino.
     -- https://en.wikipedia.org/wiki/Rotation_matrix
     for index, cell in pairs(shape)
     do
-        shape[index] = {
+        shape[index] =
+        {
             column = (cell.column * cosine) - (cell.row * sine),
             row = (cell.column * sine) + (cell.row * cosine),
+        }
+
+        minX = math.min(minX, shape[index].column)
+        maxX = math.max(maxX, shape[index].column)
+
+        minY = math.min(minY, shape[index].row)
+        maxY = math.max(maxY, shape[index].row)
+    end
+
+    local shapeWidth = math.floor(math.abs(maxX - minX)) + 1
+    local shapeHeight = math.floor(math.abs(maxY - minY)) + 1
+
+    for index, cell in pairs(shape)
+    do
+        shape[index] =
+        {
+            column = cell.column + math.floor(shapeWidth / 2),
+            row = cell.row + shapeHeight,
         }
     end
 
