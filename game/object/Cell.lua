@@ -17,7 +17,7 @@ function Cell:new(x, y)
     return cell
 end
 
-function Cell:draw()
+function Cell:draw(game)
     love.graphics.rectangle("line", self.x, self.y, 10, 10)
 end
 
