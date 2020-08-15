@@ -1,3 +1,9 @@
+local Game = require("game.Game")
+
+function love.load()
+    game = Game:new()
+end
+
 function love.draw()
-    love.graphics.print("Hello World", 400, 300)
+    game:draw()
 end
