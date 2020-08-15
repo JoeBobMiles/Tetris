@@ -10,7 +10,20 @@ function Game:new()
     setmetatable(game, self)
     self.__index = self
 
-    game.objects.grid = Grid:new(0, 0, 16, 32, 16)
+    local columns = 16
+    local rows = 32
+    local cellDimension = 16
+
+    local windowWidth, windowHeight = love.graphics.getDimensions()
+
+    local gridWidth = columns * cellDimension
+    local gridHeight = rows * cellDimension
+
+    game.objects.grid = Grid:new(
+        (windowWidth / 2) - (gridWidth / 2),
+        (windowHeight / 2) - (gridHeight / 2),
+        columns, rows,
+        cellDimension)
 
     return game
 end
