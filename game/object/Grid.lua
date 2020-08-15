@@ -1,24 +1,34 @@
 local GameObject = require("engine.object.GameObject")
 local Cell = require("game.object.Cell")
 
-local Grid = GameObject:new()
+local Grid = GameObject:new{
+    x = 0, y = 0,
+    columns = 0, rows = 0,
+    cellDimension = 0,
+    cells = {},
+}
 
-function Grid:new(columns, rows, cellDimension)
+function Grid:new(x, y, columns, rows, cellDimension)
     local grid = {}
 
     setmetatable(grid, self)
     self.__index = self
 
-    cellDimension = cellDimension or 10
+    grid.x = x or self.x
+    grid.y = y or self.y
+    grid.columns = columns or self.columns
+    grid.rows = rows or self.rows
+    grid.cellDimension = cellDimension or self.cellDimension
 
-    self.cells = {}
-    for x = 1, (columns or 1), 1 do
-        self.cells[x] = {}
+    grid.cells = {}
+    for col = 0, (grid.columns or 1), 1 do
+        grid.cells[col] = {}
 
-        for y = 1, (rows or 1), 1 do
-            self.cells[x][y] = Cell:new(
-                x * cellDimension,y * cellDimension,
-                cellDimension)
+        for row = 0, (rows or 1), 1 do
+            grid.cells[col][row] = Cell:new(
+                grid.x + (col * grid.cellDimension),
+                grid.y + (row * grid.cellDimension),
+                grid.cellDimension)
         end
     end
 
