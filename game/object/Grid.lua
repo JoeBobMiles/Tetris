@@ -1,9 +1,9 @@
 local GameObject = require("engine.object.GameObject")
 
-local Grid = {}
+local Grid = GameObject:new()
 
 function Grid:new()
-    local grid = GameObject:new()
+    local grid = {}
 
     setmetatable(grid, self)
     self.__index = self
