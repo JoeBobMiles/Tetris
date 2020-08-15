@@ -40,9 +40,12 @@ function Game:draw()
 end
 
 function Game:keyreleased(key, scancode)
-    if key == "r"
+    if key == "q"
     then
        game.objects.tetromino.angle = game.objects.tetromino.angle + 90
+    elseif key == "e"
+    then
+       game.objects.tetromino.angle = game.objects.tetromino.angle - 90
     end
 end
 
