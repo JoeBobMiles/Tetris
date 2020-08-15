@@ -1,5 +1,5 @@
 local Grid = require("game.object.Grid")
-local Tetromino = require("game.object.Tetrimino")
+local Tetromino = require("game.object.Tetromino")
 
 local Game = {}
 
