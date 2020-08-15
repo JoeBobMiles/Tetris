@@ -10,7 +10,7 @@ function Game:new()
     setmetatable(game, self)
     self.__index = self
 
-    game.objects.grid = Grid:new()
+    game.objects.grid = Grid:new(10, 10)
 
     return game
 end
