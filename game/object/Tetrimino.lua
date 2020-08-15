@@ -11,6 +11,9 @@ function Tetrimino:new(column, row)
     setmetatable(tetrimino, self)
     self.__index = self
 
+    tetrimino.column = column or self.column
+    tetrimino.row = row or self.row
+
     return tetrimino
 end
 
