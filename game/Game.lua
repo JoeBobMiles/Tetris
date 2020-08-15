@@ -38,9 +38,6 @@ function Game:update(dt)
     if self.secondsSinceLastUpdate >= 0.5
     then
         self.secondsSinceLastUpdate = self.secondsSinceLastUpdate - 1
-        self.objects.tetromino.row = self.objects.tetromino.row + 1
-
-        print(self.objects.tetromino.row)
 
         if self.objects.tetromino.row == self.objects.grid.rows
         then
@@ -56,6 +53,9 @@ function Game:update(dt)
             end
 
             self.objects.tetromino = Tetromino:new(0,0, "I")
+        else
+            self.objects.tetromino.row = self.objects.tetromino.row + 1
+            print(self.objects.tetromino.row)
         end
     end
 end
@@ -68,12 +68,18 @@ function Game:draw()
 end
 
 function Game:keyreleased(key, scancode)
-    if key == "q"
+    if key == "z"
     then
        self.objects.tetromino.angle = self.objects.tetromino.angle + 90
-    elseif key == "e"
+    elseif key == "x"
     then
        self.objects.tetromino.angle = self.objects.tetromino.angle - 90
+    elseif key == "right"
+    then
+        self.objects.tetromino.column = self.objects.tetromino.column + 1
+    elseif key == "left"
+    then
+        self.objects.tetromino.column = self.objects.tetromino.column - 1
     end
 end
 
