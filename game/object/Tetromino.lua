@@ -103,13 +103,13 @@ function Tetromino:shape()
         minY = math.min(minY, shape[index].row)
     end
 
-    local shapeWidth = math.floor(math.abs(maxX - minX))
+    local shapeWidth = math.floor(maxX - minX)
 
     for index, cell in pairs(shape)
     do
         shape[index] =
         {
-            column = cell.column - math.floor(shapeWidth / 2),
+            column = (cell.column - minX) - math.floor(shapeWidth / 2),
             row = cell.row - minY,
         }
     end
