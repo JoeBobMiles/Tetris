@@ -80,6 +80,9 @@ function Game:keyreleased(key, scancode)
     elseif key == "left"
     then
         self.objects.tetromino.column = self.objects.tetromino.column - 1
+    elseif key == "space" or key == "down"
+    then
+        self.objects.tetromino.row = self.objects.grid.rows
     end
 end
 
