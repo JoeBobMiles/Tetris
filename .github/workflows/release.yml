@@ -20,6 +20,8 @@ jobs:
     steps:
     - name: Checkout most recent version.
       uses: actions/checkout@v2
+      with:
+        submodules: true
     
     - name: Build game.
       uses: nhartland/love-build@v1-beta2
