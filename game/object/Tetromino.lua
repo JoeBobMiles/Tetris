@@ -78,7 +78,7 @@ function Tetromino:shape()
 
     local shape = shapes[self.type]
 
-    local angleRadians = self.angle * (math.pi / 180)
+    local angleRadians = math.rad(self.angle)
     local sine = math.sin(angleRadians)
     local cosine = math.cos(angleRadians)
 
