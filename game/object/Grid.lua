@@ -35,18 +35,22 @@ function Grid:new(x, y, columns, rows, cellDimension)
     return grid
 end
 
+function Grid:width()
+    return self.columns * self.cellDimension
+end
+
+function Grid:height()
+    return self.rows * self.cellDimension
+end
+
 function Grid:update(game, dt)
     return
 end
 
 function Grid:draw(game)
-    for x, row in pairs(self.cells)
-    do
-        for y, cell in pairs(row)
-        do
-            cell:draw(game)
-        end
-    end
+    love.graphics.rectangle("line",
+        self.x, self.y,
+        self:width(), self:height())
 end
 
 return Grid
