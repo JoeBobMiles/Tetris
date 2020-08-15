@@ -26,7 +26,8 @@ function Game:new()
         columns, rows,
         cellDimension)
 
-    game.objects.tetrimino = Tetromino:new(columns/2, rows/2, "I")
+    game.objects.tetromino = Tetromino:new(columns/2, rows/2, "I")
+    game.objects.tetromino.angle = 0
 
     return game
 end

@@ -4,7 +4,8 @@ local Tetromino = GameObject:new
 {
     row = 0,
     column = 0,
-    type = "I"
+    type = "I",
+    angle = 0,
 }
 
 function Tetromino:new(column, row, type)
@@ -75,7 +76,23 @@ function Tetromino:shape()
         },
     }
 
-    return shapes[self.type]
+    local shape = shapes[self.type]
+    local angleRadians = self.angle * (math.pi / 180)
+
+    local sine = math.sin(angleRadians)
+    local cosine = math.cos(angleRadians)
+
+    -- Hard-coded Euclidean rotation of tetromino.
+    -- https://en.wikipedia.org/wiki/Rotation_matrix
+    for index, cell in pairs(shape)
+    do
+        shape[index] = {
+            column = (cell.column * cosine) - (cell.row * sine),
+            row = (cell.column * sine) + (cell.row * cosine),
+        }
+    end
+
+    return shape
 end
 
 function Tetromino:draw(game)
