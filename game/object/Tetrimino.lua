@@ -1,26 +1,26 @@
 local GameObject = require("engine.object.GameObject")
 
-local Tetrimino = GameObject:new
+local Tetromino = GameObject:new
 {
     row = 0,
     column = 0,
-    type = "cyan"
+    type = "I"
 }
 
-function Tetrimino:new(column, row, type)
-    local tetrimino = {}
+function Tetromino:new(column, row, type)
+    local tetromino = {}
 
-    setmetatable(tetrimino, self)
+    setmetatable(tetromino, self)
     self.__index = self
 
-    tetrimino.column = math.floor(column) or self.column
-    tetrimino.row = math.floor(row) or self.row
-    tetrimino.type = type or self.type
+    tetromino.column = math.floor(column) or self.column
+    tetromino.row = math.floor(row) or self.row
+    tetromino.type = type or self.type
 
-    return tetrimino
+    return tetromino
 end
 
-function Tetrimino:draw(game)
+function Tetromino:draw(game)
     local grid = game.objects.grid
 
     local function fillCell(column, row)
@@ -32,43 +32,37 @@ function Tetrimino:draw(game)
             grid.cellDimension)
     end
 
+    -- Refer to: https://en.wikipedia.org/wiki/Tetromino for tetromino names.
     local actions =
     {
-        ["cyan"] =
-        -- A straight line
+        ["I"] =
         function (column, row)
             fillCell(column, row)
             fillCell(column, row-1)
             fillCell(column, row-2)
             fillCell(column, row-3)
         end,
-        ["blue"] =
-        -- Left-handed l-shape
+        ["J"] =
         function (column, row)
             return
         end,
-        ["orange"] =
-        -- Right-handed l-shape
+        ["L"] =
         function (column, row)
             return
         end,
-        ["yellow"] =
-        -- Square
+        ["O"] =
         function (column, row)
             return
         end,
-        ["green"] =
-        -- Right-handed s-shape
+        ["S"] =
         function (column, row)
             return
         end,
-        ["red"] =
-        -- Left-handed s-shape
+        ["Z"] =
         function (column, row)
             return
         end,
-        ["violet"] =
-        -- T-shape
+        ["T"] =
         function (column, row)
             return
         end,
@@ -77,4 +71,4 @@ function Tetrimino:draw(game)
     actions[self.type](self.column, self.row)
 end
 
-return Tetrimino
+return Tetromino

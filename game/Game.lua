@@ -1,5 +1,5 @@
 local Grid = require("game.object.Grid")
-local Tetrimino = require("game.object.Tetrimino")
+local Tetromino = require("game.object.Tetrimino")
 
 local Game = {}
 
@@ -26,7 +26,7 @@ function Game:new()
         columns, rows,
         cellDimension)
 
-    game.objects.tetrimino = Tetrimino:new(columns/2, rows/2)
+    game.objects.tetrimino = Tetromino:new(columns/2, rows/2)
 
     return game
 end
