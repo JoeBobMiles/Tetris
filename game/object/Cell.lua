@@ -3,6 +3,8 @@ local GameObject = require("engine.object.GameObject")
 local Cell = GameObject:new{
     x = 0,
     y = 0,
+    dimension = 0,
+    filled = false,
 }
 
 function Cell:new(x, y, dimension)
@@ -19,8 +21,15 @@ function Cell:new(x, y, dimension)
 end
 
 function Cell:draw(game)
+    local drawStyle = "line"
+
+    if self.filled
+    then
+        drawStyle = "fill"
+    end
+
     love.graphics.rectangle(
-        "line",
+        drawStyle,
         self.x, self.y,
         self.dimension, self.dimension)
 end

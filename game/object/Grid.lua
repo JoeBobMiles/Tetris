@@ -51,6 +51,14 @@ function Grid:draw(game)
     love.graphics.rectangle("line",
         self.x, self.y,
         self:width(), self:height())
+
+    for colNumber, column in pairs(self.cells)
+    do
+        for rowNumber, cell in pairs(column)
+        do
+            cell:draw(game)
+        end
+    end
 end
 
 return Grid

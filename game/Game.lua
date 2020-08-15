@@ -27,7 +27,7 @@ function Game:new()
         columns, rows,
         cellDimension)
 
-    game.objects.tetromino = Tetromino:new(columns/2, rows/2, "I")
+    game.objects.tetromino = Tetromino:new(0,0, "I")
 
     return game
 end
@@ -35,10 +35,28 @@ end
 function Game:update(dt)
     self.secondsSinceLastUpdate = self.secondsSinceLastUpdate + dt
 
-    if self.secondsSinceLastUpdate >= 1
+    if self.secondsSinceLastUpdate >= 0.5
     then
         self.secondsSinceLastUpdate = self.secondsSinceLastUpdate - 1
-        self.objects.tetromino.row = self.objects.tetromino.row + dt
+        self.objects.tetromino.row = self.objects.tetromino.row + 1
+
+        print(self.objects.tetromino.row)
+
+        if self.objects.tetromino.row == self.objects.grid.rows
+        then
+            for index, cell in pairs(self.objects.tetromino:shape())
+            do
+                cell =
+                {
+                    column = self.objects.tetromino.column + cell.column,
+                    row = self.objects.tetromino.row - cell.row,
+                }
+
+                self.objects.grid.cells[cell.column][cell.row].filled = true
+            end
+
+            self.objects.tetromino = Tetromino:new(0,0, "I")
+        end
     end
 end
 
