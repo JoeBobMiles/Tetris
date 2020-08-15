@@ -21,17 +21,13 @@ function Cell:new(x, y, dimension)
 end
 
 function Cell:draw(game)
-    local drawStyle = "line"
-
     if self.filled
     then
-        drawStyle = "fill"
+        love.graphics.rectangle(
+            "fill",
+            self.x, self.y,
+            self.dimension, self.dimension)
     end
-
-    love.graphics.rectangle(
-        drawStyle,
-        self.x, self.y,
-        self.dimension, self.dimension)
 end
 
 return Cell
