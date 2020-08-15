@@ -20,73 +20,78 @@ function Tetromino:new(column, row, type)
     return tetromino
 end
 
+function Tetromino:shape()
+    -- Refer to: https://en.wikipedia.org/wiki/Tetromino for tetromino names.
+    local shapes =
+    {
+        ["I"] =
+        {
+            { column = 0, row = 3 },
+            { column = 0, row = 2 },
+            { column = 0, row = 1 },
+            { column = 0, row = 0 },
+        },
+        ["J"] =
+        {
+            { column = 0,  row = 2 },
+            { column = 0,  row = 1 },
+            { column = 0,  row = 0 },
+            { column = -1, row = 0 },
+        },
+        ["L"] =
+        {
+            { column = 0, row = 2 },
+            { column = 0, row = 1 },
+            { column = 0, row = 0 },
+            { column = 1, row = 0 },
+        },
+        ["O"] =
+        {
+            { column = 0, row = 1 },
+            { column = 1, row = 1 },
+            { column = 0, row = 0 },
+            { column = 1, row = 0 },
+        },
+        ["S"] =
+        {
+            { column = 1,  row = 1 },
+            { column = 0,  row = 1 },
+            { column = 0,  row = 0 },
+            { column = -1, row = 0 },
+        },
+        ["Z"] =
+        {
+            { column = -1, row = 1 },
+            { column = 0,  row = 1 },
+            { column = 0,  row = 0 },
+            { column = 1,  row = 0 },
+        },
+        ["T"] =
+        {
+            { column = 0,  row = 0 },
+            { column = -1, row = 1 },
+            { column = 0,  row = 1 },
+            { column = 1,  row = 1 },
+        },
+    }
+
+    return shapes[self.type]
+end
+
 function Tetromino:draw(game)
     local grid = game.objects.grid
 
-    local function fillCell(column, row)
+    local shape = self:shape()
+
+    for index, cell in pairs(shape)
+    do
         love.graphics.rectangle(
             "fill",
-            grid.x + (grid.cellDimension * column),
-            grid.y + (grid.cellDimension * row),
+            grid.x + (grid.cellDimension * (self.column + cell.column)),
+            grid.y + (grid.cellDimension * (self.row - cell.row)),
             grid.cellDimension,
             grid.cellDimension)
     end
-
-    -- Refer to: https://en.wikipedia.org/wiki/Tetromino for tetromino names.
-    local actions =
-    {
-        ["I"] =
-        function (column, row)
-            fillCell(column, row)
-            fillCell(column, row-1)
-            fillCell(column, row-2)
-            fillCell(column, row-3)
-        end,
-        ["J"] =
-        function (column, row)
-            fillCell(column-1, row)
-            fillCell(column, row)
-            fillCell(column, row-1)
-            fillCell(column, row-2)
-        end,
-        ["L"] =
-        function (column, row)
-            fillCell(column+1, row)
-            fillCell(column, row)
-            fillCell(column, row-1)
-            fillCell(column, row-2)
-        end,
-        ["O"] =
-        function (column, row)
-            fillCell(column-1, row)
-            fillCell(column, row)
-            fillCell(column, row-1)
-            fillCell(column-1, row-1)
-        end,
-        ["S"] =
-        function (column, row)
-            fillCell(column-1, row)
-            fillCell(column, row)
-            fillCell(column, row-1)
-            fillCell(column+1, row-1)
-        end,
-        ["Z"] =
-        function (column, row)
-            fillCell(column+1, row)
-            fillCell(column, row)
-            fillCell(column, row-1)
-            fillCell(column-1, row-1)
-        end,
-        ["T"] =
-        function (column, row)
-            fillCell(column, row)
-            fillCell(column-1, row-1)
-            fillCell(column, row-1)
-            fillCell(column+1, row-1)
-        end,
-    }
-
-    actions[self.type](self.column, self.row)
 end
 
 return Tetromino
