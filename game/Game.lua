@@ -5,7 +5,8 @@ local Game = {}
 
 function Game:new()
     local game = {
-        objects = {}
+        objects = {},
+        secondsSinceLastUpdate = 0,
     }
 
     setmetatable(game, self)
@@ -31,6 +32,16 @@ function Game:new()
     return game
 end
 
+function Game:update(dt)
+    self.secondsSinceLastUpdate = self.secondsSinceLastUpdate + dt
+
+    if self.secondsSinceLastUpdate >= 1
+    then
+        self.secondsSinceLastUpdate = self.secondsSinceLastUpdate - 1
+        self.objects.tetromino.row = self.objects.tetromino.row + dt
+    end
+end
+
 function Game:draw()
     for name, object in pairs(self.objects)
     do
@@ -41,10 +52,10 @@ end
 function Game:keyreleased(key, scancode)
     if key == "q"
     then
-       game.objects.tetromino.angle = game.objects.tetromino.angle + 90
+       self.objects.tetromino.angle = self.objects.tetromino.angle + 90
     elseif key == "e"
     then
-       game.objects.tetromino.angle = game.objects.tetromino.angle - 90
+       self.objects.tetromino.angle = self.objects.tetromino.angle - 90
     end
 end
 
